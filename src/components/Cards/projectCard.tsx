@@ -1,6 +1,6 @@
 import { Avatar, Button } from "@chakra-ui/react";
 import React from "react";
-import { BsGithub, BsLink45Deg } from "react-icons/bs";
+import { BsGithub, BsLink45Deg, BsStar, BsStarFill } from "react-icons/bs";
 import { CgEditExposure, CgPen } from "react-icons/cg";
 import {
   RiDatabase2Fill,
@@ -11,12 +11,23 @@ import {
   RiUser2Fill,
 } from "react-icons/ri";
 
-type Props = {};
+type Props = {
+  type: "featured" | "other" | "draft";
+};
 
 const ProjectCard = (props: Props) => {
+  let color = "";
+  if (props.type === "featured") color = "bg-green-600";
+  if (props.type === "draft") color = "bg-red-500";
+  if (props.type === "other") color = "bg-gray-600";
   return (
-    <div className="mx-auto z-5 my-4 relative flex flex-col rounded-[20px] max-w-[300px] bg-white bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px]  undefined">
-      <div className="h-full w-full">
+    <div className="mx-auto  z-5 my-4 mt-16 relative flex flex-col rounded-[20px] max-w-[300px] bg-white bg-clip-border shadow-3xl shadow-shadow-500  w-full !p-4 3xl:p-![18px]  undefined">
+      <div className="h-full  w-full">
+        <div
+          className={`flex gap-1 font-poppins px-2 items-center ${color}  text-white text-xs chip absolute bottom-full right-4 font-semibold uppercase p-1 rounded-t-md`}
+        >
+          {props.type}
+        </div>
         <div className="relative w-full">
           <img
             src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"

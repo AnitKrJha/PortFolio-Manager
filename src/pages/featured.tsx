@@ -11,8 +11,9 @@ const Featured = (props: Props) => {
         Featured Projects
       </h1>
       <div className="flex flex-wrap m-auto gap-2">
-        <ProjectCard />
-        <ProjectCard />
+        <ProjectCard type="featured" />
+        <ProjectCard type="other" />
+        <ProjectCard type="draft" />
       </div>
     </AppShell>
   );
