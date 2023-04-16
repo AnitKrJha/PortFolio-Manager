@@ -1,5 +1,5 @@
-import { Avatar, Button } from "@chakra-ui/react";
-import React from "react";
+import { Avatar, Button, Image } from "@chakra-ui/react";
+import React, { useState } from "react";
 import { BsGithub, BsLink45Deg, BsStar, BsStarFill } from "react-icons/bs";
 import { CgEditExposure, CgPen } from "react-icons/cg";
 import {
@@ -16,6 +16,8 @@ type Props = {
 };
 
 const ProjectCard = (props: Props) => {
+  const [imageLoading, setImageLoading] = useState(true);
+
   let color = "";
   if (props.type === "featured") color = "bg-green-600";
   if (props.type === "draft") color = "bg-red-500";
@@ -29,10 +31,20 @@ const ProjectCard = (props: Props) => {
           {props.type}
         </div>
         <div className="relative w-full">
-          <img
+          {imageLoading && (
+            <div className="w-full rounded-xl h-40 bg-gray-500 animate-pulse"></div>
+          )}
+          <Image
             src="https://horizon-tailwind-react-git-tailwind-components-horizon-ui.vercel.app/static/media/Nft3.3b3e6a4b3ada7618de6c.png"
             className="mb-3 h-full w-full rounded-xl 3xl:h-full 3xl:w-full"
             alt=""
+            display={imageLoading ? "none" : "auto"}
+            // width={240}
+            // height={240}
+            onLoad={() => {
+              console.log("loaded");
+              setImageLoading(false);
+            }}
           />
           <button
             title="Edit Project"

@@ -8,6 +8,8 @@ import SidebarChip from "./SidebarChip";
 import { Avatar, Button, useOutsideClick } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import LoginModal from "../Modals/Auth/AuthModal";
+import { useUser } from "@supabase/auth-helpers-react";
 
 type SideBarChip = {
   name: string;
@@ -30,6 +32,8 @@ const Sidebar = (props: Props) => {
       if (open === true) setOpen(false);
     },
   });
+
+  const user = useUser();
 
   return (
     <div
@@ -57,7 +61,11 @@ const Sidebar = (props: Props) => {
         } `}
       >
         <div className="avatar text-center py-12 w-full">
-          <Avatar bg="gray.400" size={"lg"} className="w-20 aspect-square" />
+          <Avatar
+            bg={!user ? "red.400" : "green.500"}
+            size={"lg"}
+            className="w-20 aspect-square"
+          />
           <p className="w-full text-center font-medium font-poppins">
             Anit Kr Jha
           </p>

@@ -1,10 +1,17 @@
 import { Button, Icon } from "@chakra-ui/react";
 import React from "react";
 import { RiDraftLine, RiLogoutBoxLine } from "react-icons/ri";
+import AuthModal from "../Modals/Auth/AuthModal";
+import { authModalState } from "@/atoms/authModal";
+import { useSetRecoilState } from "recoil";
+import { useUser } from "@supabase/auth-helpers-react";
 
 type Props = {};
 
 const SidebarButtons = (props: Props) => {
+  const user = useUser();
+  const [open, setOpen] = React.useState(false);
+  const setAuthModalState = useSetRecoilState(authModalState);
   return (
     <div className="complementary-buttons pr-1 flex w-full justify-end gap-3  py-2">
       {/* <Button className=" px-1 py-1 rounded  relative">
@@ -14,12 +21,16 @@ const SidebarButtons = (props: Props) => {
         </div>
       </Button> */}
       <Button
-        color="gray.600"
+        color="gray.800"
         leftIcon={<Icon as={RiLogoutBoxLine} fontSize={19} />}
-        className=" p-1 rounded  relative text-xs font-poppins hover:bg-gray-100"
+        onClick={() => {
+          setAuthModalState({ open: true, type: user ? "logout" : "login" });
+        }}
+        className=" p-1 rounded  relative text-xs font-semibold font-poppins hover:bg-gray-100"
       >
-        LogOut
+        {user ? "Logout" : "LogIn"}
       </Button>
+      <AuthModal />
     </div>
   );
 };
