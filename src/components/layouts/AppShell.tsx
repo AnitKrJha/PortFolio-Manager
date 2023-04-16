@@ -8,7 +8,7 @@ type Props = {
 
 const AppShell = (props: Props) => {
   return (
-    <div className="min-w-full flex flex-col md:flex-row min-h-screen bg-black">
+    <div className="min-w-full flex flex-col md:flex-row min-h-screen">
       <Sidebar />
 
       <div className="content">{props.children}</div>
