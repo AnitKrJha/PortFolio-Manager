@@ -1,9 +1,13 @@
 import { ReactElement, useState, useRef } from "react";
-import { RiDraftLine } from "react-icons/ri";
+import { BsFillFolderFill, BsStarFill } from "react-icons/bs";
+import { RiTaskFill } from "react-icons/ri";
+import Logo from "/public/Logo.svg";
 import { CgMenuGridR } from "react-icons/cg";
 import SidebarButtons from "./SidebarButtons";
 import SidebarChip from "./SidebarChip";
 import { Avatar, Button, useOutsideClick } from "@chakra-ui/react";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 type SideBarChip = {
   name: string;
@@ -17,6 +21,7 @@ type Props = {
 
 const Sidebar = (props: Props) => {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
   const ref = useRef<any>();
 
   useOutsideClick({
@@ -32,11 +37,11 @@ const Sidebar = (props: Props) => {
       className="transition-all bg-white md:rounded-r-2xl rounded-b-2xl sidebar w-full flex flex-col item-center md:items-start md:w-60 md:h-screen h-auto "
     >
       <div className="logo text-3xl py-2 px-2 relative text-black text-center w-full">
-        Logo
+        <Image src={Logo} alt="logo" className="md:m-auto ml-2" priority />
         <Button
           position={"absolute"}
           display={{ md: "none" }}
-          className="absolute right-4 md:hidden"
+          className="absolute right-4 top-1/4 md:hidden"
           onClick={() => {
             setOpen(!open);
           }}
@@ -53,22 +58,21 @@ const Sidebar = (props: Props) => {
       >
         <div className="avatar text-center py-12 w-full">
           <Avatar bg="gray.400" size={"lg"} className="w-20 aspect-square" />
-          <p className="w-full text-center font-bold">Anit Kr Jha</p>
-          <span className="text-gray-500 text-xs">Admin</span>
+          <p className="w-full text-center font-medium font-poppins">
+            Anit Kr Jha
+          </p>
+          <span className="text-gray-500 text-xs font-poppins">Admin</span>
         </div>
 
-        <div className="scroll-area overflow-y-auto  text-black w-full flex flex-wrap md:flex-nowrap justify-center md:justify-start md:py-3 gap-1 md:flex-col e items-center md:items-stretch md:px-6">
-          <SidebarChip leftIcon={<RiDraftLine fontSize={23} />}>
-            Hello Bro
+        <div className="scroll-area gap-2 mb-3 overflow-y-auto  text-black w-full flex flex-wrap md:flex-nowrap justify-center md:justify-start md:py-3 md:flex-col e items-center md:items-stretch md:px-6">
+          <SidebarChip link="/" leftIcon={<BsFillFolderFill fontSize={20} />}>
+            All Projects
           </SidebarChip>
-          <SidebarChip leftIcon={<RiDraftLine fontSize={23} />}>
-            Hello hi
+          <SidebarChip link="/featured" leftIcon={<BsStarFill fontSize={20} />}>
+            Featured
           </SidebarChip>
-          <SidebarChip leftIcon={<RiDraftLine fontSize={23} />}>
-            Hello
-          </SidebarChip>
-          <SidebarChip leftIcon={<RiDraftLine fontSize={23} />}>
-            Hello
+          <SidebarChip link="/drafts" leftIcon={<RiTaskFill fontSize={20} />}>
+            Drafts
           </SidebarChip>
         </div>
       </div>
