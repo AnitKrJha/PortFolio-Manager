@@ -1,9 +1,10 @@
 import { atom, useResetRecoilState } from "recoil";
 
 export interface Tech {
-  name: "string";
-  imageURL: "string";
+  name: string;
+  imageURL: string;
 }
+export type Projects = Project[];
 
 export interface Project {
   id: string;
@@ -14,16 +15,9 @@ export interface Project {
   type: "featured" | "other" | "drafts";
 }
 
-const defaultProjectsState: Project = {
-  id: "",
-  githubLink: "",
-  liveSiteLink: "",
-  name: "",
-  type: "drafts",
-  techStack: [],
-};
+const defaultProjectsState: Projects = [];
 
-export const projectsState = atom<Project>({
+export const projectsState = atom<Projects>({
   key: "projectsState",
   default: defaultProjectsState,
 });
