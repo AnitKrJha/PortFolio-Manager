@@ -1,5 +1,9 @@
 import { ReactElement, useState, useRef } from "react";
-import { BsFillFolderFill, BsStarFill } from "react-icons/bs";
+import {
+  BsFillFolderFill,
+  BsFillPatchPlusFill,
+  BsStarFill,
+} from "react-icons/bs";
 import { RiTaskFill } from "react-icons/ri";
 import Logo from "/public/Logo.svg";
 import { CgMenuGridR } from "react-icons/cg";
@@ -81,6 +85,12 @@ const Sidebar = (props: Props) => {
           </SidebarChip>
           <SidebarChip link="/drafts" leftIcon={<RiTaskFill fontSize={20} />}>
             Drafts
+          </SidebarChip>
+          <SidebarChip
+            link="/edit/new"
+            leftIcon={<BsFillPatchPlusFill fontSize={20} />}
+          >
+            New Project
           </SidebarChip>
         </div>
       </div>

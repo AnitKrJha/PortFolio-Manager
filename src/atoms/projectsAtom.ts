@@ -1,4 +1,4 @@
-import { atom, useResetRecoilState } from "recoil";
+import { atom } from "recoil";
 
 export interface Tech {
   name: string;
