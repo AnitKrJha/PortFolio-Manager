@@ -1,21 +1,22 @@
 import { atom } from "recoil";
 
-export interface Tech {
-  name: string;
-  imageURL: string;
+export interface Projects {
+  Projects: Project[];
+  fetchedOnce: boolean;
 }
-export type Projects = Project[];
 
 export interface Project {
   id: string;
   name: string;
-  techStack: Tech[];
+  brief: string;
+  techStack: string[];
   githubLink: string;
+  coverImage: string;
   liveSiteLink: string;
-  type: "featured" | "other" | "drafts";
+  type: "featured" | "other" | "draft";
 }
 
-const defaultProjectsState: Projects = [];
+const defaultProjectsState: Projects = { Projects: [], fetchedOnce: false };
 
 export const projectsState = atom<Projects>({
   key: "projectsState",
