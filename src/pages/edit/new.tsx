@@ -53,12 +53,29 @@ const CreateEvent = (props: Props) => {
     console.log(finalData);
 
     try {
+      //first upload Image to bucket
+      const randomUUID = crypto.randomUUID();
+      const { data: storageData, error: storageError } = await supabase.storage
+        .from("project")
+        .upload(`${randomUUID}/cover.png`, finalData.projectCoverImg, {
+          cacheControl: "3600",
+          upsert: true,
+        });
+
+      if (storageError) {
+        throw new Error(storageError.message);
+      }
+
+      //then update in the table
+
       const { data, error } = await supabase
         .from("projects")
         .insert([
           {
+            project_id: randomUUID,
             project_name: finalData.projectName,
             project_brief: finalData.projectBrief,
+            project_cover_img: `https://axobpcaobwvpqbtmljsa.supabase.co/storage/v1/object/public/project/${randomUUID}/cover.png`,
             live_link: finalData.liveLink,
             github_link: finalData.githubLink,
             draft: finalData.draft === "on",
