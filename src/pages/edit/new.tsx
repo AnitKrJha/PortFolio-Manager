@@ -145,7 +145,6 @@ const CreateEvent = (props: Props) => {
               Is it a Draft ?
             </label>
             <Input
-              required
               name="draft"
               type="checkbox"
               id="draft"
@@ -160,20 +159,20 @@ const CreateEvent = (props: Props) => {
           >
             Submit
           </Button>
+          {error && (
+            <div className="error t flex items-center text-sm text-red-600 shadow shadow-red-400 rounded my-2">
+              {" "}
+              <BsExclamation strokeWidth={0.2} fontSize={24} /> {error}
+              fsd
+            </div>
+          )}{" "}
+          {success && (
+            <div className="success flex items-center text-sm text-green-600 shadow shadow-green-400 rounded my-2">
+              <BsCheck strokeWidth={0.2} fontSize={24} />
+              {success}
+            </div>
+          )}{" "}
         </form>
-        {error && (
-          <div className="error t flex items-center text-sm text-red-600 shadow shadow-red-400 rounded-b">
-            {" "}
-            <BsExclamation strokeWidth={0.2} fontSize={24} /> {error}
-            fsd
-          </div>
-        )}{" "}
-        {success && (
-          <div className="success flex items-center text-sm text-green-600 shadow shadow-green-400 rounded-b">
-            <BsCheck strokeWidth={0.2} fontSize={24} />
-            {success}
-          </div>
-        )}{" "}
       </div>
     </AppShell>
   );
