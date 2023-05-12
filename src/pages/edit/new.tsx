@@ -19,6 +19,7 @@ import {
   BsPlus,
 } from "react-icons/bs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import RadioGroup from "@/components/Form/radioGroup";
 
 type Props = {};
 
@@ -52,20 +53,26 @@ const CreateEvent = (props: Props) => {
     finalData.techStack = techStack;
     console.log(finalData);
 
+    ///after reading form data
+
+    const randomUUID = crypto.randomUUID();
+    const hasImage = !!finalData.projectCoverImg.name;
+
     try {
       //first upload Image to bucket
-      const randomUUID = crypto.randomUUID();
-      const { data: storageData, error: storageError } = await supabase.storage
-        .from("project")
-        .upload(`${randomUUID}/cover.png`, finalData.projectCoverImg, {
-          cacheControl: "3600",
-          upsert: true,
-        });
+      if (hasImage) {
+        const { data: storageData, error: storageError } =
+          await supabase.storage
+            .from("project")
+            .upload(`${randomUUID}/cover.png`, finalData.projectCoverImg, {
+              cacheControl: "3600",
+              upsert: true,
+            });
 
-      if (storageError) {
-        throw new Error(storageError.message);
+        if (storageError) {
+          throw new Error(storageError.message);
+        }
       }
-
       //then update in the table
 
       const { data, error } = await supabase
@@ -75,10 +82,12 @@ const CreateEvent = (props: Props) => {
             project_id: randomUUID,
             project_name: finalData.projectName,
             project_brief: finalData.projectBrief,
-            project_cover_img: `https://axobpcaobwvpqbtmljsa.supabase.co/storage/v1/object/public/project/${randomUUID}/cover.png`,
+            project_cover_img: hasImage
+              ? `https://axobpcaobwvpqbtmljsa.supabase.co/storage/v1/object/public/project/${randomUUID}/cover.png`
+              : null,
             live_link: finalData.liveLink,
             github_link: finalData.githubLink,
-            draft: finalData.draft === "on",
+            type: finalData.type,
             tech_stack: finalData.techStack,
           },
         ])
@@ -154,21 +163,12 @@ const CreateEvent = (props: Props) => {
               // placeholder="separate-using-comma"
             />
           </div>
-          <div className="flex items-center border-b-2 pb-2 mb-4 border-gray-300">
-            <label
-              htmlFor="draft "
-              className="text-sm font-semibold text-gray-500 mr-4 "
-            >
-              Is it a Draft ?
-            </label>
-            <Input
-              name="draft"
-              type="checkbox"
-              id="draft"
-              className="border-b-2 "
-              // placeholder="separate-using-comma"
-            />
-          </div>
+          <RadioGroup
+            values={["draft ", "other", "featured"]}
+            individualLabels={["Draft", "Other", "Featured"]}
+            name="type"
+            mainLabel="Type of Project"
+          />
           <Button
             type="submit"
             isLoading={loading}
