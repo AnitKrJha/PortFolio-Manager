@@ -41,11 +41,11 @@ const SignUp = (props: Props) => {
       if (error) {
         throw new Error(error.message);
       }
+      setSuccess("Confiramtion link has been sent to " + email);
     } catch (err: any) {
       setError(err.message);
     }
     setLoading(false);
-    setSuccess("Confiramtion link has been sent to " + email);
   };
 
   return (
@@ -133,7 +133,7 @@ const SignUp = (props: Props) => {
       <div className="button-grp flex w-full justify-end">
         <Button
           variant={""}
-          bg="blue.600"
+          bg="gray.800"
           type="submit"
           isLoading={loading}
           textColor={"white"}
@@ -148,12 +148,13 @@ const SignUp = (props: Props) => {
       <Divider bg="black" border="1px solid" borderColor={"gray.400"} />
 
       <div className="text-sm font-poppins w-full text-center">
-        Are You New Here?{" "}
+        Already a user?{" "}
         <Button
           variant={"link"}
           textColor={"blue.400"}
           fontSize={14}
-          className="text-sm"
+          className="text-sm font-thin"
+          fontWeight={10}
           onClick={() =>
             props.setAuthModalState((prev) => ({ ...prev, type: "login" }))
           }

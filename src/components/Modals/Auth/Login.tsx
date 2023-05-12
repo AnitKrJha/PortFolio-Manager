@@ -93,7 +93,7 @@ const Login = (props: Props) => {
       <div className="button-grp flex w-full justify-end">
         <Button
           variant={""}
-          bg="blue.600"
+          bg="gray.800"
           type="submit"
           isLoading={loading}
           textColor={"white"}
@@ -107,12 +107,13 @@ const Login = (props: Props) => {
       </div>
       <Divider bg="black" border="1px solid" borderColor={"gray.400"} />
       <div className="text-sm font-poppins w-full text-center">
-        Already a user?{" "}
+        Are You new here ?{" "}
         <Button
           variant={"link"}
           textColor={"blue.400"}
           fontSize={14}
           className="text-sm"
+          fontWeight={10}
           onClick={() =>
             props.setAuthModalState((prev) => ({ ...prev, type: "signup" }))
           }

@@ -1,204 +1,179 @@
-import { Button } from "@chakra-ui/react";
+import {
+  Badge,
+  Button,
+  ChakraBaseProvider,
+  ChakraProvider,
+  Input,
+  Textarea,
+} from "@chakra-ui/react";
 import { setDefaultResultOrder } from "dns";
-import React, { FormEvent } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import AppShell from "@/components/layouts/AppShell";
 import JsonDisplay from "@/components/extras/jsonDisplay";
+import FloatingInput from "@/components/Form/floatingInput";
+import ImagePrev from "@/components/Form/ImagePrev";
+import {
+  BsCheck,
+  BsExclamation,
+  BsExclamationCircleFill,
+  BsPlus,
+} from "react-icons/bs";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 type Props = {};
 
 const CreateEvent = (props: Props) => {
-  const [prevImage, setPrevImage] = React.useState<any>("");
-  const [data, setData] = React.useState<any>("");
-  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const [techStack, setTechStack] = useState<string[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const supabase = useSupabaseClient();
+
+  const handleTechStack = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const string = e.target.value;
+    const final = string
+      .split(",")
+      .filter((e) => e.trim())
+      .map((item) => item.trim());
+
+    console.log(final);
+    setTechStack((prev) => final);
+  };
+
+  const handleFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    setError("");
+    setSuccess("");
+    setLoading(true);
     console.log("hello");
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    const reader = new FileReader();
-    if (data.avatar) {
-      reader.readAsDataURL(data.avatar as Blob);
-    }
+    const finalData: any = Object.fromEntries(formData.entries());
+    finalData.techStack = techStack;
+    console.log(finalData);
 
-    reader.onload = (readerEvent) => {
-      if (readerEvent.target?.result) {
-        setPrevImage(readerEvent.target.result as string);
+    try {
+      const { data, error } = await supabase
+        .from("projects")
+        .insert([
+          {
+            project_name: finalData.projectName,
+            project_brief: finalData.projectBrief,
+            live_link: finalData.liveLink,
+            github_link: finalData.githubLink,
+            draft: finalData.draft === "on",
+            tech_stack: finalData.techStack,
+          },
+        ])
+        .select();
+
+      if (error) {
+        throw new Error(error.message);
       }
-    };
-    setData(data);
-    console.log(data);
+      setSuccess("Congrats!! New Project has been created");
+    } catch (e: Error | any) {
+      setError(e.message);
+    }
+    setLoading(false);
   };
 
   return (
     <AppShell>
-      <div className="bg-gray-50 p-4 rounded-lg">
+      <div
+        className={` font-poppins  p-4 rounded-lg bg-transparent ${
+          success ? "bg-green-100" : error ? "bg-red-100" : "bg-sky-100"
+        } `}
+      >
+        {}
+        <h1 className=" font-poppins text-center rounded-t text-4xl bg-white max-w-3xl text-black m-auto pt-4 pb-8 font-bold">
+          New Project
+        </h1>
         <form
-          onReset={(e) => e.currentTarget.reset()}
-          className="max-w-lg mx-auto relative"
-          action=""
           onSubmit={handleFormSubmit}
+          className="max-w-3xl m-auto  p-4 bg-white rounded-b"
         >
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="name"
-            >
-              Name:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          <FloatingInput
+            type="text"
+            label="Project Name"
+            name="projectName"
+            required
+          />
+          <FloatingInput
+            required
+            type="textarea"
+            label="Project Brief"
+            name="projectBrief"
+          />
+          <FloatingInput
+            required
+            label="Github Link"
+            name="githubLink"
+            type="url"
+          />
+          <FloatingInput
+            required
+            label="Live Link"
+            name="liveLink"
+            type="url"
+          />
+          <ImagePrev name="projectCoverImg" label="Cover Image" />
+          <div className="relative ">
+            <ChakraProvider>
+              <Badge
+                variant={"solid"}
+                position={"absolute"}
+                colorScheme="messenger"
+                className="top-1/2 right-0"
+              >
+                {techStack.length} Tech
+              </Badge>
+            </ChakraProvider>
+            <FloatingInput
+              required
+              label="Tech Used"
+              name="techStack"
               type="text"
-              id="name"
-              name="name"
-              placeholder="Enter your name"
-              required
+              onChange={handleTechStack}
+              // placeholder="separate-using-comma"
             />
           </div>
-
-          <div className="mb-4">
+          <div className="flex items-center border-b-2 pb-2 mb-4 border-gray-300">
             <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="email"
+              htmlFor="draft "
+              className="text-sm font-semibold text-gray-500 mr-4 "
             >
-              Email:
+              Is it a Draft ?
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
+            <Input
               required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="password"
-            >
-              Password:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="password"
-              id="password"
-              name="password"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2" htmlFor="age">
-              Age:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="number"
-              id="age"
-              name="age"
-              min="18"
-              max="120"
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="gender"
-            >
-              Gender:
-            </label>
-            <select
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="gender"
-              name="gender"
-              required
-            >
-              <option value="">--Select--</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="newsletter"
-            >
-              Subscribe to newsletter:
-            </label>
-            <input
-              className="mr-2 leading-tight"
+              name="draft"
               type="checkbox"
-              id="newsletter"
-              name="newsletter"
+              id="draft"
+              className="border-b-2 "
+              // placeholder="separate-using-comma"
             />
           </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="birthdate"
-            >
-              Date of Birth:
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              type="date"
-              id="birthdate"
-              name="birthdata"
-            />
-          </div>
-
-          <div className="mb-4 ">
-            <label
-              className="block text-gray-700 font-bold mb-2"
-              htmlFor="avatar"
-            >
-              Avatar:
-            </label>
-
-            <label
-              className="cursor-pointer bg-gray-200 mb-4 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded"
-              htmlFor="avatar"
-            >
-              Select Image
-            </label>
-            <input
-              className="hidden"
-              type="file"
-              id="avatar"
-              name="avatar"
-              accept="image/*"
-            />
-            <img
-              className="mt-4   rounded"
-              id="preview-image"
-              src={prevImage}
-              alt=""
-            />
-          </div>
-
-          <div className=" m-auto justify-between fixed max-w-full bottom-0  bg-slate-500 py-4 bg-opacity-60">
-            <Button
-              type="submit"
-              className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-              Submit
-            </Button>
-            <Button
-              type="reset"
-              className="bg-gray-500 text-white rounded-lg px-4 py-2"
-            >
-              Reset
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            isLoading={loading}
+            className=" font-poppins mt-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark-bg-blue-600 dark-hover:bg-blue-700 dark-focus:ring-blue-800"
+          >
+            Submit
+          </Button>
         </form>
-        <div className="data">
-          <JsonDisplay data={data} />
-        </div>
+        {error && (
+          <div className="error t flex items-center text-sm text-red-600 shadow shadow-red-400 rounded-b">
+            {" "}
+            <BsExclamation strokeWidth={0.2} fontSize={24} /> {error}
+            fsd
+          </div>
+        )}{" "}
+        {success && (
+          <div className="success flex items-center text-sm text-green-600 shadow shadow-green-400 rounded-b">
+            <BsCheck strokeWidth={0.2} fontSize={24} />
+            {success}
+          </div>
+        )}{" "}
       </div>
     </AppShell>
   );
