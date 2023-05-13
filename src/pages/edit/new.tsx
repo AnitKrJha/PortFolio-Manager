@@ -106,11 +106,10 @@ const CreateEvent = (props: Props) => {
   return (
     <AppShell>
       <div
-        className={` font-poppins  p-4 rounded-lg bg-transparent ${
+        className={` font-poppins  p-4 rounded-lg  ${
           success ? "bg-green-100" : error ? "bg-red-100" : "bg-sky-100"
         } `}
       >
-        {}
         <h1 className=" font-poppins text-center rounded-t text-4xl bg-white max-w-3xl text-black m-auto pt-4 pb-8 font-bold">
           New Project
         </h1>

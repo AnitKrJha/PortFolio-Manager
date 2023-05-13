@@ -7,6 +7,7 @@ type Props = {
   individualLabels: string[];
   mainLabel: string;
   defaultValue?: string;
+  required?: boolean;
 };
 
 const RadioGroup = (props: Props) => {
@@ -25,6 +26,7 @@ const RadioGroup = (props: Props) => {
               {props.individualLabels[index]}
             </label>
             <Input
+              required={props.required}
               defaultChecked={item.trim() === props.defaultValue?.trim()}
               name={props.name}
               type="radio"

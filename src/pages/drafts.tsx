@@ -42,8 +42,9 @@ const Drafts = (props: Props) => {
   return (
     <AppShell>
       <h1 className="font-poppins text-center font-semibold text-2xl md:text-3xl ">
-        Featured Projects
+        Drafted Projects
       </h1>
+
       <div className="flex flex-wrap m-auto gap-2">
         {allProjects.Projects.filter(
           (item) => item.type.trimEnd() === "draft"

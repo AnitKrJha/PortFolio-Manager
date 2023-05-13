@@ -42,13 +42,15 @@ const EditPage = (props: Props) => {
     const hasImage = !!finalData.projectCoverImg.name;
     const project_id = router.query.id;
     try {
+      if (!user) {
+        throw new Error("Please Login First");
+      }
       //first upload Image to bucket
       if (hasImage) {
         const { data: storageData, error: storageError } =
           await supabase.storage
             .from("project")
             .upload(`${project_id}/cover.png`, finalData.projectCoverImg, {
-              cacheControl: "3600",
               upsert: true,
             });
 
@@ -80,7 +82,8 @@ const EditPage = (props: Props) => {
       if (error) {
         throw new Error(error.message);
       }
-      setSuccess("Congrats!! New Project has been created");
+      setSuccess("Congrats!! The Project has been Updated");
+      router.push("/");
     } catch (e: Error | any) {
       setError(e.message);
     }
@@ -221,6 +224,7 @@ const EditPage = (props: Props) => {
             />
           </div>
           <RadioGroup
+            required
             defaultValue={project?.type.trim()}
             values={["draft ", "other", "featured"]}
             individualLabels={["Draft", "Other", "Featured"]}
