@@ -26,7 +26,7 @@ const ProjectCard = (props: Props) => {
         >
           {project.type}
         </div>
-        <div className="relative w-full">
+        <div className="relative w-full max-h-48 aspect-[4/3]">
           {imageLoading && (
             <div className="w-full rounded-xl h-40 bg-gray-500 animate-pulse"></div>
           )}
