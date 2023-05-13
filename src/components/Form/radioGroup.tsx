@@ -6,6 +6,7 @@ type Props = {
   values: string[];
   individualLabels: string[];
   mainLabel: string;
+  defaultValue?: string;
 };
 
 const RadioGroup = (props: Props) => {
@@ -16,7 +17,7 @@ const RadioGroup = (props: Props) => {
       </label>
       {props.values.map((item: any, index: number) => {
         return (
-          <div className="mt-2">
+          <div key={index} className="mt-2">
             <label
               htmlFor={props.individualLabels[index]}
               className="text-sm font-medium text-gray-600 mr-4 ml-3 "
@@ -24,6 +25,7 @@ const RadioGroup = (props: Props) => {
               {props.individualLabels[index]}
             </label>
             <Input
+              defaultChecked={item.trim() === props.defaultValue?.trim()}
               name={props.name}
               type="radio"
               id={props.individualLabels[index]}

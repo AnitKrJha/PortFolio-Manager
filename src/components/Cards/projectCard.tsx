@@ -1,16 +1,9 @@
 import { Project } from "@/atoms/projectsAtom";
 import { Avatar, Button, Image } from "@chakra-ui/react";
-import React, { useState } from "react";
-import { BsGithub, BsLink45Deg, BsStar, BsStarFill } from "react-icons/bs";
-import { CgEditExposure, CgPen } from "react-icons/cg";
-import {
-  RiDatabase2Fill,
-  RiDatabaseFill,
-  RiGatsbyFill,
-  RiMoonFoggyFill,
-  RiReactjsFill,
-  RiUser2Fill,
-} from "react-icons/ri";
+import Link from "next/link";
+import { useState } from "react";
+import { BsGithub, BsLink45Deg } from "react-icons/bs";
+import { CgPen } from "react-icons/cg";
 
 type Props = {
   project: Project;
@@ -52,12 +45,13 @@ const ProjectCard = (props: Props) => {
               setImageLoading(false);
             }}
           />
-          <button
+          <Link
+            href={`/edit/${project.id}`}
             title="Edit Project"
             className="absolute top-3 right-3 flex items-center justify-center rounded-full bg-white p-2 text-brand-500 hover:cursor-pointer"
           >
             <CgPen fontSize={22} />
-          </button>
+          </Link>
         </div>
         <div className="mb-3 flex items-end flex-col justify-between px-1 md:items-start">
           <div className="mb-2">
