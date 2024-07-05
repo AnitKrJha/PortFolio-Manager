@@ -83,7 +83,7 @@ const CreateEvent = (props: Props) => {
             project_name: finalData.projectName,
             project_brief: finalData.projectBrief,
             project_cover_img: hasImage
-              ? `https://axobpcaobwvpqbtmljsa.supabase.co/storage/v1/object/public/project/${randomUUID}/cover.png`
+              ? `https://tikwwiikptzriajzcojo.supabase.co/storage/v1/object/public/project/${randomUUID}/cover.png`
               : null,
             live_link: finalData.liveLink,
             github_link: finalData.githubLink,

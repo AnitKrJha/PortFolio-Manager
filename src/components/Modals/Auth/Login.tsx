@@ -110,10 +110,10 @@ const Login = (props: Props) => {
         Are You new here ?{" "}
         <Button
           variant={"link"}
-          textColor={"blue.400"}
+          textColor={"blue.500"}
           fontSize={14}
           className="text-sm"
-          fontWeight={10}
+          fontWeight={20}
           onClick={() =>
             props.setAuthModalState((prev) => ({ ...prev, type: "signup" }))
           }

@@ -71,7 +71,7 @@ const Sidebar = (props: Props) => {
             className="w-20 aspect-square"
           />
           <p className="w-full text-center font-medium font-poppins">
-            Anit Kr Jha
+            Utkrisht Sharma
           </p>
           <span className="text-gray-500 text-xs font-poppins">Admin</span>
         </div>
